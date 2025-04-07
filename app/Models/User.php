@@ -4,13 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -45,4 +46,30 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    // One-to-Many relationship with Orders
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    // One-to-One relationship with Billing
+    public function billing()
+    {
+        return $this->hasOne(Billing::class);
+    }
+
+    // One-to-Many relationship with CourseProgress
+    public function courseProgress()
+    {
+        return $this->hasMany(CourseProgress::class);
+    }
+
+    // Many-to-Many relationship with Courses through Orders
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'orders');
+    }
+
 }
