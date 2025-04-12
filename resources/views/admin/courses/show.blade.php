@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-md-8">
                   <p><strong>Instructor:</strong> {{ $course->instructor_name }}</p>
-                  <p><strong>Description:</strong> {{ $course->description }}</p>
+                  <p><strong>Description:</strong> {!! $course->description !!}</p>
                   <p><strong>Price:</strong> ${{ $course->price }}</p>
                   <p><strong>Duration:</strong> {{ $course->duration }} hours</p>
                   <p><strong>Last Updated:</strong> {{ \Carbon\Carbon::parse($course->last_updated)->format('Y-m-d') }}</p>

@@ -10,6 +10,7 @@
 
         <!-- CSS Libraries -->
         <link rel="stylesheet" href="{{ asset('backend/assets/modules/fontawesome/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('backend/assets/modules/ionicons/css/ionicons.min.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/assets/modules/summernote/summernote-bs4.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/assets/modules/owlcarousel2/dist/assets/owl.carousel.min.css') }}">
         <link rel="stylesheet" href="{{ asset('backend/assets/modules/owlcarousel2/dist/assets/owl.theme.default.min.css') }}">
@@ -25,6 +26,8 @@
 
         <!-- Toastr CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+        @stack('styles')
 
         <!-- Start GA -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
@@ -96,5 +99,6 @@
     </script>
     @endif
 
+    @stack('scripts')
     </body>
 </html>
