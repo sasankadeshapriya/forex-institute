@@ -51,13 +51,13 @@
                     <td>{{ $course->duration }} Hours</td>
                     <td>{{ $course->updated_at->format('Y-m-d') }}</td>
                     <td>
-                      <a href="{{ route('admin.course-content.create',$course->id) }}" class="btn btn-primary">Manage</a>
-                      <a href="{{ route('admin.courses.show', $course->id) }}" class="btn btn-primary">View</a>
-                      <a href="{{ route('admin.courses.edit', $course->id) }}" class="btn btn-primary">Edit</a>
+                      <a href="{{ route('admin.course-content.create',$course->id) }}" class="btn btn-primary"><i class="ion-folder"></i></a>
+                      <a href="{{ route('admin.courses.show', $course->id) }}" class="btn btn-primary"><i class="ion-eye"></i></a>
+                      <a href="{{ route('admin.courses.edit', $course->id) }}" class="btn btn-primary"><i class="ion-android-create"></i> </a>
                       <form action="{{ route('admin.courses.destroy', $course->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger"><i class="ion-trash-a"></i></button>
                       </form>
                     </td>
                   </tr>

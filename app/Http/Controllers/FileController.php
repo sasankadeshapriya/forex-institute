@@ -32,4 +32,18 @@ class FileController extends Controller
         return response()->download($filePath);
     }
 
+    public function stream($fileName)
+    {
+        $filePath = storage_path('app/private/contents/' . $fileName);
+
+        if (!file_exists($filePath)) {
+            return abort(404);
+        }
+
+        return response()->file($filePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"'
+        ]);
+    }
+
 }

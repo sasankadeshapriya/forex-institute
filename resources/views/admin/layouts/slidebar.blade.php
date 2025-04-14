@@ -13,7 +13,7 @@
 
         <li class="{{ request()->is('admin/dashboard') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
 
-        <li class="{{ request()->is('admin/courses*') || request()->is('admin/content*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.courses.index') }}"><i class="fas fa-th-large"></i> <span>Courses</span></a></li>
+        <li class="{{ request()->is('admin/courses*') || request()->is('admin/course-content*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.courses.index') }}"><i class="fas fa-th-large"></i> <span>Courses</span></a></li>
 
         <li><a class="nav-link" href="blank.html"><i class="far fa-file-alt"></i> <span>Orders</span></a></li>
 
