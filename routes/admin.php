@@ -20,5 +20,8 @@ Route::prefix('admin')
             Route::get('edit/{id}', [CourseContentController::class, 'edit'])->name('course-content.edit');
             Route::put('update/{id}', [CourseContentController::class, 'update'])->name('course-content.update');
             Route::delete('destroy/{id}', [CourseContentController::class, 'destroy'])->name('course-content.destroy');
+            Route::delete('delete-all/{course_id}', [CourseContentController::class, 'deleteAll'])->name('course-content.deleteAll');
+            Route::get('move-up/{id}', [CourseContentController::class, 'moveUp'])->name('course-content.moveUp');
+            Route::get('move-down/{id}', [CourseContentController::class, 'moveDown'])->name('course-content.moveDown');
         });
     });

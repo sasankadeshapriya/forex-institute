@@ -33,10 +33,11 @@
                       <div class="form-group col-md-6">
                         <label for="content_type">Content Type</label>
                         <select class="form-control" id="content_type" name="content_type">
-                          <option value="video" {{ old('content_type') == 'video' ? 'selected' : '' }}>Video</option>
-                          <option value="pdf" {{ old('content_type') == 'pdf' ? 'selected' : '' }}>PDF</option>
-                          <option value="file" {{ old('content_type') == 'file' ? 'selected' : '' }}>File</option>
-                          <option value="text" {{ old('content_type') == 'text' ? 'selected' : '' }}>Text</option>
+                            <option value="" disabled selected>Select Content Type</option>
+                            <option value="video" {{ old('content_type') == 'video' ? 'selected' : '' }}>Video</option>
+                            <option value="pdf" {{ old('content_type') == 'pdf' ? 'selected' : '' }}>PDF</option>
+                            <option value="file" {{ old('content_type') == 'file' ? 'selected' : '' }}>File</option>
+                            <option value="text" {{ old('content_type') == 'text' ? 'selected' : '' }}>Text</option>
                         </select>
                       </div>
                     </div>
@@ -89,38 +90,101 @@
 
                   @foreach ($contents as $content)
                   <div class="card">
-                      <div class="card-header" style='border-color:#f9f9f9; background-color: #fcfcff;'>
+                      <div class="card-header" style='border-color:#f9f9f9; background-color: #e9ecef;'>
                       <h4>
                           {{ $content->heading }}
-                          <span class="badge badge-light" style='color: #6C757D;'>{{ ucfirst($content->content_type) }}</span>
+                          <span class="badge" style='color: #6C757D; background-color: #cdd3d7;'>{{ ucfirst($content->content_type) }}</span>
                       </h4>
                       <div class="card-header-action">
-                          <a data-collapse="#panel-{{ $content->id }}" class="btn btn-icon btn-info" href="#"><i class="fas fa-plus"></i></a>
-                          <a class="btn btn-icon btn-info" href="#"><i class="fa fa-arrow-up"></i></a>
-                          <a class="btn btn-icon btn-info" href="#"><i class="fa fa-arrow-down"></i></a>
+                          <a data-collapse="#panel-{{ $content->id }}" class="btn-sm" href="#" style="border-radius: 0px !important;"><i class="fas fa-plus"></i></a>
+                          <a href="{{ route('admin.course-content.moveUp', $content->id) }}" class="btn-sm" style="border-radius: 0px !important;">
+                            <i class="fa fa-arrow-up"></i>
+                          </a>
+                          <a href="{{ route('admin.course-content.moveDown', $content->id) }}" class="btn-sm" style="border-radius: 0px !important;">
+                            <i class="fa fa-arrow-down"></i>
+                          </a>
                       </div>
                       </div>
                       <div class="collapse" id="panel-{{ $content->id }}">
+                      {{-- <div class="card-body">
+                        @if ($content->content_type == 'text')
+                        {!! $content->content !!}
+                        @elseif ($content->content_type == 'video')
+                            <iframe src="{{ $content->content }}" width="100%" height="400"></iframe>
+                        @elseif ($content->content_type == 'pdf' || $content->content_type == 'file')
+                            <a href="{{ route('file.download', basename($content->content)) }}" target="_blank">Download</a>
+                        @endif
+                      </div> --}}
                       <div class="card-body">
-                          @if ($content->content_type == 'text')
-                              {!! $content->content !!}
-                          @elseif ($content->content_type == 'video')
-                              <iframe src="{{ $content->content }}" width="100%" height="400"></iframe>
-                          @elseif ($content->content_type == 'pdf' || $content->content_type == 'file')
-                              <a href="{{ asset('storage/'.$content->content) }}" target="_blank">Download</a>
-                          @endif
+                        @if ($content->content_type == 'text')
+                            <!-- Display Text Content with Rich HTML -->
+                            <div class="content-text">
+                                {!! $content->content !!} <!-- Allow HTML rendering -->
+                            </div>
+
+                        @elseif ($content->content_type == 'video')
+                            <!-- Embed Google Drive Video Link -->
+                            <div class="content-video">
+                                @php
+                                    // Extract Google Drive file ID from the URL
+                                    preg_match('/\/d\/(.*?)(?:\/|$)/', $content->content, $matches);
+                                    $videoId = $matches[1] ?? null;
+                                @endphp
+
+                                @if ($videoId)
+                                    <iframe src="https://drive.google.com/file/d/{{ $videoId }}/preview" width="100%" height="400"></iframe>
+                                @else
+                                    <p>Video link is invalid or missing the file ID.</p>
+                                @endif
+                            </div>
+
+                        @elseif ($content->content_type == 'file')
+                            <!-- Show File Information, File Size, Name and Provide Download Link -->
+                            <div class="content-file">
+                                @php
+                                    $filePath = storage_path('app/private/' . $content->content);
+                                    $fileSize = is_file($filePath) ? formatBytes(filesize($filePath)) : ''; // Function to format file size
+                                @endphp
+
+                                <p><strong>File Name:</strong> {{ basename($content->content) }}</p>
+                                <p><strong>File Size:</strong> {{ $fileSize }}</p>
+
+                                <!-- Download Link -->
+                                <a href="{{ route('file.download', basename($content->content)) }}" target="_blank">Download</a>
+                            </div>
+
+                            @elseif ($content->content_type == 'pdf')
+                            <!-- Embed PDF with Navigation and Download Option -->
+                            <div class="content-pdf">
+                                <!-- Embed PDF directly using the streaming route -->
+                                <embed src="{{ route('file.stream', basename($content->content)) }}" type="application/pdf" width="100%" height="600px">
+                                <p>
+                                    <a href="{{ route('file.download', basename($content->content)) }}" class="btn btn-primary" target="_blank">Download PDF</a>
+                                </p>
+                            </div>
+                            @endif
+
                       </div>
                       <div class="card-footer">
-                          <a href="{{ route('admin.course-content.edit', $content->id) }}" class="btn btn-icon btn-info"><i class="ion-edit"></i></a>
-                          <a href="{{ route('admin.course-content.destroy', $content->id) }}" class="btn btn-icon btn-info"><i class="ion-trash-a"></i></a>
+                          <div class="card-footer" style="padding-left: 0px;">
+                            <form action="{{ route('admin.course-content.destroy', $content->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-icon btn-info"><i class="ion-trash-a"></i></button>
+                            </form>
+                        </div>
                       </div>
                       </div>
                   </div>
                   @endforeach
 
               </div>
-              <div class="card-footer text-right">
-                <button type="submit" class="btn btn-danger">Delete</button>
+              <div class="card-footer text-left">
+                <form action="{{ route('admin.course-content.deleteAll', $course->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete All</button>
+                </form>
               </div>
             </div>
         </div>
@@ -136,13 +200,13 @@
     <style>
         .btn-info, .btn-info.disabled {
             box-shadow: 0 2px 6px #E3EAEF;
-            background-color: #E3EAEF;
+            background-color: #cdd3d7;
             border-color: #E3EAEF;
             color: #6C757D;
         }
 
         .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled:active {
-            background-color: #E3EAEF !important;
+            background-color: #cdd3d7 !important;
         }
 
         .card-header h4 .badge {
@@ -162,3 +226,13 @@
         });
     </script>
 @endpush
+
+@php
+function formatBytes($bytes, $precision = 2) {
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    $bytes = max($bytes, 0);
+    $power = floor(($bytes ? log($bytes) : 0) / log(1024));
+    return number_format($bytes / pow(1024, $power), $precision) . ' ' . $units[$power];
+}
+@endphp
+
