@@ -4,17 +4,13 @@ use App\Http\Controllers\EntrolledCourseController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\UserDashboard;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    if (Auth::user()->role === 'admin') {
-        return redirect()->route('admin.dashboard');
-    }
-    return view('client.dashboard');
-})->middleware(['auth', 'verified',])->name('dashboard');
+Route::get('/dashboard', [UserDashboard::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,6 +26,8 @@ Route::middleware('auth')->group(function () {
     Route::get('tcontent', function () {
         return view('client.entrolled-courses.show');
     })->name('tcontent');
+
+    Route::post('/entrolled-courses/{course}/mark-complete/{contentId}', [EntrolledCourseController::class, 'markContentComplete']);
 
 });
 
