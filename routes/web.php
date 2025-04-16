@@ -26,6 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/file-stream/{fileName}', [FileController::class, 'stream'])->name('file.stream');
 
     Route::resource('entrolled-courses', EntrolledCourseController::class);
+
+    Route::get('tcontent', function () {
+        return view('client.entrolled-courses.show');
+    })->name('tcontent');
+
 });
 
 require __DIR__ . '/auth.php';
