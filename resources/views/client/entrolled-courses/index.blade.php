@@ -25,13 +25,13 @@
             </div>
             <div class="card-body">
               <div class="row g-4">
-
                 <!-- Course Card Start -->
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <a href="#" class="text-decoration-none text-dark">
+                @foreach($coursesWithProgress as $course)
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <a href="{{ route('entrolled-courses.show', $course->id) }}" class="text-decoration-none text-dark">
                       <div class="card course-card h-100 shadow-sm border-0">
                         <div class="position-relative">
-                          <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=400&q=80"
+                          <img src="{{ asset('storage/' . $course->image) }}"
                                class="card-img-top course-thumb"
                                alt="Course Thumbnail" />
                           <button class="btn btn-play rounded-circle shadow">
@@ -39,22 +39,27 @@
                           </button>
                         </div>
                         <div class="card-body">
-                          <h5 class="card-title mb-2 text-truncate">Modern JavaScript Bootcamp</h5>
+                          <h5 class="card-title mb-2 text-truncate">{{ $course->name }}</h5>
                           <p class="card-text mb-1 text-muted small">
-                            <i class="fas fa-user me-1"></i> John Doe
+                            <i class="fas fa-user me-1"></i> {{ $course->instructor_name }}
                           </p>
                           <p class="card-text mb-0 text-muted small">
-                            <i class="fas fa-clock me-1"></i> 12.5 hours
+                            <i class="fas fa-clock me-1"></i> {{ $course->duration }} hours
                           </p>
+
+                          <!-- Show Progress -->
+                          <div class="mb-2">
+                            <div class="progress" style="height: 6px; border-radius: 3px;">
+                              <div class="progress-bar" role="progressbar" style="width: {{ $course->progress }}%;" aria-valuenow="{{ $course->progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted">{{ number_format($course->progress, 2) }}% completed</small>
+                          </div>
                         </div>
                       </div>
                     </a>
                   </div>
-
+                @endforeach
               </div>
-            </div>
-            <div class="card-footer text-right">
-              <!-- Optional Footer Content -->
             </div>
           </div>
         </div>
@@ -63,6 +68,7 @@
   </section>
 </div>
 @endsection
+
 
 @push('styles')
 <style>
