@@ -23,11 +23,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('entrolled-courses', EntrolledCourseController::class);
 
-    Route::get('tcontent', function () {
-        return view('client.entrolled-courses.show');
-    })->name('tcontent');
+    Route::post(
+        '/entrolled-courses/{entrolled_course}/mark-complete/{contentId}',
+        [EntrolledCourseController::class, 'markComplete']
+    )->name('entrolled-courses.mark-complete');
 
-    Route::post('/entrolled-courses/{course}/mark-complete/{contentId}', [EntrolledCourseController::class, 'markContentComplete']);
+
 
 });
 

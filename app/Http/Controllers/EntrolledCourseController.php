@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
 use App\Models\Course;
 use App\Models\CourseProgress;
+use App\Models\CourseContent;
 
 class EntrolledCourseController extends Controller
 {
@@ -90,6 +91,7 @@ class EntrolledCourseController extends Controller
             $nextContent = $course->contents->first(); // If no content is completed, show the first one
         }
 
+        // dd($course, $progress, $contents, $completedContentIds, $nextContent, $lastCompletedContentId);
         return view('client.entrolled-courses.show', compact('course', 'progress', 'contents', 'completedContentIds', 'nextContent', 'lastCompletedContentId'));
     }
 
@@ -120,29 +122,16 @@ class EntrolledCourseController extends Controller
     public function markComplete($courseId, $contentId)
     {
         $user = Auth::user();
-        $course = Course::find($courseId);
-        $content = CourseContent::find($contentId);
+        $course = Course::findOrFail($courseId);
 
-        // Mark the content as completed for the user
-        $progress = $user->courseProgress()->where('course_content_id', $contentId)->first();
+        $progress = $user->courseProgress()->firstOrNew([
+            'course_id' => $course->id,
+            'course_content_id' => $contentId,
+        ]);
+        $progress->completed = true;
+        $progress->save();
 
-        if ($progress) {
-            $progress->completed = true;
-            $progress->save();
-        } else {
-            $user->courseProgress()->create([
-                'course_id' => $course->id,
-                'course_content_id' => $contentId,
-                'completed' => true,
-            ]);
-        }
-
-        // Get the next content after completion
-        $nextContent = $course->contents()->where('id', '>', $contentId)->first();
-
-        // Return the next content ID for the frontend
-        return response()->json(['nextContentId' => $nextContent ? $nextContent->id : null]);
+        return redirect()->route('entrolled-courses.show', $course->id);
     }
-
 
 }
