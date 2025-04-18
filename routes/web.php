@@ -5,12 +5,19 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserDashboard;
+use App\Http\Controllers\CourseListController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/dashboard', [UserDashboard::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+// shop related routes
+Route::get('/courses', [CourseListController::class, 'index'])->name('courses.index');
+Route::get('/courses/{course}', [CourseListController::class, 'show'])->name('courses.show');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,8 +34,6 @@ Route::middleware('auth')->group(function () {
         '/entrolled-courses/{entrolled_course}/mark-complete/{contentId}',
         [EntrolledCourseController::class, 'markComplete']
     )->name('entrolled-courses.mark-complete');
-
-
 
 });
 
