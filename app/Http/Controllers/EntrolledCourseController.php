@@ -18,28 +18,47 @@ class EntrolledCourseController extends Controller
     {
         $user = Auth::user();
 
-        $completedOrders = $user->orders()->where('status', 'completed')->get();
+        // 1) Pull all completed orders, newest first
+        $completedOrders = $user->orders()
+            ->where('status', 'completed')
+            ->orderByDesc('created_at')
+            ->get();
 
-        $courses = $completedOrders->map(function ($order) {
-            return $order->course;
-        });
-
-        $coursesWithProgress = $courses->map(function ($course) use ($user) {
-
+        // 2) Extract each course and compute its progress
+        $coursesWithProgress = $completedOrders->map(function ($order) use ($user) {
+            $course = $order->course;
             $totalContents = $course->contents->count();
-
             $completedContents = $course->contents->filter(function ($content) use ($user) {
-                return $user->courseProgress()->where('course_content_id', $content->id)->where('completed', true)->exists();
+                return $user->courseProgress()
+                    ->where('course_content_id', $content->id)
+                    ->where('completed', true)
+                    ->exists();
             })->count();
 
-            $progress = $totalContents > 0 ? ($completedContents / $totalContents) * 100 : 0;
-
-            $course->progress = $progress;
+            $course->progress = $totalContents > 0
+                ? ($completedContents / $totalContents) * 100
+                : 0;
 
             return $course;
         });
 
-        return view('client.entrolled-courses.index', compact('coursesWithProgress'));
+        // 3) Find the very last piece of content they marked complete
+        $lastProg = $user->courseProgress()
+            ->where('completed', true)
+            ->latest('updated_at')
+            ->first();
+
+        // 4) Decide which course to continue:
+        //    - if they've ever completed a piece, continue that course
+        //    - else, fall back to most-recently purchased
+        $continueCourseId = $lastProg
+            ? $lastProg->course_id
+            : ($completedOrders->first()->course_id ?? null);
+
+        return view(
+            'client.entrolled-courses.index',
+            compact('coursesWithProgress', 'continueCourseId')
+        );
     }
 
 

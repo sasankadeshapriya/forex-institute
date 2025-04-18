@@ -11,19 +11,27 @@
 
       <ul class="sidebar-menu">
 
-        <li class="{{ request()->is('admin/dashboard') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.dashboard') }}"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
+        {{-- always show Dashboard --}}
+        <li class="{{ request()->is('admin/dashboard') ? 'active' : '' }}">
+          <a class="nav-link" href="{{ route('admin.dashboard') }}">
+            <i class="fas fa-fire"></i> <span>Dashboard</span>
+          </a>
+        </li>
 
-        <li class="{{ request()->is('admin/courses*') || request()->is('admin/course-content*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('admin.courses.index') }}"><i class="fas fa-th-large"></i> <span>Courses</span></a></li>
+        {{-- hide everything else on profile.* pages --}}
+        @unless(request()->routeIs('profile.*') || request()->is('profile*'))
+          <li class="{{ request()->is('admin/courses*') || request()->is('admin/course-content*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.courses.index') }}">
+              <i class="fas fa-th-large"></i> <span>Courses</span>
+            </a>
+          </li>
 
-        <li><a class="nav-link" href="#"><i class="far fa-file-alt"></i> <span>Orders</span></a></li>
-
-        {{-- <li class="dropdown">
-          <a href="#" class="nav-link has-dropdown"><i class="fas fa-bicycle"></i> <span>Orders</span></a>
-          <ul class="dropdown-menu">
-            <li><a class="nav-link" href="features-activities.html"></a></li>
-            <li><a class="nav-link" href="features-post-create.html">Post Create</a></li>
-          </ul>
-        </li> --}}
+          <li>
+            <a class="nav-link" href="#">
+              <i class="far fa-file-alt"></i> <span>Orders</span>
+            </a>
+          </li>
+        @endunless
 
       </ul>
 

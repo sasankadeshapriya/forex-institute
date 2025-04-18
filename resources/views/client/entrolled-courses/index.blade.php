@@ -19,9 +19,17 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <a href="#" class="btn btn-primary" style="border-radius: 5px;">
-                Continue Learning
-              </a>
+                @if($continueCourseId)
+                  <a href="{{ route('entrolled-courses.show', $continueCourseId) }}"
+                     class="btn btn-primary"
+                     style="border-radius: 5px;">
+                    Continue Learning
+                  </a>
+                @else
+                  <button class="btn btn-primary" disabled style="border-radius: 5px;">
+                    Continue Learning
+                  </button>
+                @endif
             </div>
             <div class="card-body">
               <div class="row g-4">
