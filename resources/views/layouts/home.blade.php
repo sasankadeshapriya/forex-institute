@@ -7,24 +7,53 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Base Styles */
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #000000 0%, #741B1B 100%);
             min-height: 100vh;
             color: white;
+            margin: 0;
+            padding: 0;
         }
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/frontend/background_image.jpg');
-            background-size: cover;
-            background-position: center;
+
+        /* Header/Navigation */
+        .header {
+            background: linear-gradient(to bottom, #000000, #000000);
+            padding: 1rem 0;
+            position: relative;
+            z-index: 100;
         }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        /* Logo */
         .logo {
             color: #228B22;
             font-weight: 700;
             font-size: 1.5rem;
             display: flex;
             align-items: center;
+            text-decoration: none;
         }
+
         .logo-icon {
             display: inline-block;
             width: 30px;
@@ -34,6 +63,7 @@
             margin-right: 8px;
             position: relative;
         }
+
         .logo-icon::after {
             content: "↑↓";
             position: absolute;
@@ -44,200 +74,255 @@
             font-weight: bold;
             font-size: 12px;
         }
-        .cta-button {
-            background-color: #228B22;
+
+        /* Desktop Navigation */
+        .desktop-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .desktop-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
             transition: all 0.3s ease;
         }
+
+        .desktop-nav a:hover {
+            color: #228B22;
+        }
+
+        .desktop-nav .btn {
+            background-color: #dc2626;
+            color: white;
+            border-radius: 9999px;
+            padding: 0.5rem 1.5rem;
+        }
+
+        .desktop-nav .btn:hover {
+            background-color: #b91c1c;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        /* Mobile Slider Navigation */
+        .mobile-slider-nav {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 1000;
+            transition: right 0.3s ease-out;
+            padding-top: 5rem;
+            overflow-y: auto;
+        }
+
+        .mobile-slider-nav.active {
+            right: 0;
+        }
+
+        .mobile-slider-nav a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .mobile-slider-nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #228B22;
+        }
+
+        /* Updated mobile navigation buttons */
+        .mobile-slider-nav .btn {
+            display: block;
+            text-align: center;
+            background: none;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+            padding: 0.75rem;
+            margin: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+
+        .mobile-slider-nav .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #228B22;
+            border-color: #228B22;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Close Button */
+        .close-mobile-menu {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            color: white;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-menu-button {
+                display: block;
+            }
+        }
+
+        /* Content Styles */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/frontend/background_image.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cta-button {
+            background-color: #228B22;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
         .cta-button:hover {
             background-color: #1a6e1a;
             transform: translateY(-2px);
         }
+
         .feature-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
             transition: all 0.3s ease;
         }
+
         .feature-card:hover {
             transform: translateY(-5px);
             border-color: #228B22;
         }
-
-        /* Mobile Menu */
-        .mobile-menu-button {
-            display: none;
-        }
-        .mobile-menu {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 1.2rem;
-            }
-            .logo-icon {
-                width: 25px;
-                height: 25px;
-            }
-
-            /* Mobile Menu */
-            .desktop-nav {
-                display: none;
-            }
-            .mobile-menu-button {
-                display: block;
-                background: none;
-                border: none;
-                color: white;
-                font-size: 1.5rem;
-                cursor: pointer;
-            }
-            .mobile-menu.active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 70px;
-                right: 20px;
-                background: rgba(0, 0, 0, 0.9);
-                padding: 20px;
-                border-radius: 8px;
-                z-index: 1000;
-                width: 200px;
-            }
-            .mobile-menu a {
-                margin-bottom: 10px;
-                text-align: center;
-            }
-
-            /* Hero Section */
-            .hero-section {
-                min-height: 80vh;
-                padding-top: 60px;
-                padding-bottom: 60px;
-            }
-            .hero-section h1 {
-                font-size: 2.5rem;
-                margin-bottom: 1rem;
-            }
-            .hero-section p {
-                font-size: 1rem;
-                margin-bottom: 1.5rem;
-            }
-            .hero-section .flex {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            .hero-section a {
-                width: 100%;
-                text-align: center;
-                padding: 0.75rem;
-            }
-
-            /* Features */
-            .feature-card {
-                padding: 1.5rem;
-            }
-            .feature-card h3 {
-                font-size: 1.25rem;
-            }
-
-            /* Testimonials */
-            .testimonial {
-                padding: 1.5rem;
-            }
-        }
-
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .logo {
-                font-size: 1.8rem;
-            }
-            .hero-section h1 {
-                font-size: 3rem;
-            }
-            .feature-card {
-                padding: 1.5rem;
-            }
-        }
-
     </style>
 </head>
 <body>
-
     <!-- Navigation -->
-    <div class="bg-gradient-to-b from-black to-black py-4">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <div class="logo">
-                <span class="logo-icon"></span>
-                TheCrtCrew
-            </div>
-
-            @if (Route::has('login'))
-                <!-- Desktop Navigation -->
-                <nav class="desktop-nav flex items-center gap-4">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors px-4 py-2 text-sm md:text-base">
-                            Dashboard
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-white px-4 py-2 rounded-lg transition-colors text-sm md:text-base">
-                            Log in
-                        </a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="px-4 md:px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors text-sm md:text-base">
-                                Register
-                            </a>
-                        @endif
-                    @endauth
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <button class="mobile-menu-button" onclick="toggleMobileMenu()">
-                    ☰
-                </button>
-
-                <!-- Mobile Menu -->
-                <nav id="mobileMenu" class="mobile-menu">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors px-4 py-2 block mb-2">
-                            Dashboard
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-white px-4 py-2 rounded-lg transition-colors block mb-2">
-                            Log in
-                        </a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors block">
-                                Register
-                            </a>
-                        @endif
-                    @endauth
-                </nav>
-            @endif
-        </div>
-    </div>
-
-    @yield('content')
-
-    <!-- Footer -->
-    <footer class="bg-black py-6 md:py-8">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="logo mb-4 md:mb-0">
+    <header class="header">
+        <div class="container">
+            <div class="flex justify-between items-center">
+                <a href="/" class="logo">
                     <span class="logo-icon"></span>
                     TheCrtCrew
-                </div>
-                <div class="text-gray-400 text-sm md:text-base">
-                    © {{ date('Y') }} TheCrtCrew. All rights reserved.
-                </div>
+                </a>
+
+                @if (Route::has('login'))
+                    <!-- Desktop Navigation -->
+                    <nav class="desktop-nav">
+                        <a href="{{ route('courses.index') }}" class="hover:text-green-500">Courses</a>
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="btn">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="hover:text-green-500">Log in</a>
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="btn">Register</a>
+                            @endif
+                        @endauth
+                    </nav>
+
+                    <!-- Mobile Menu Button -->
+                    <button class="mobile-menu-button" id="mobileMenuButton">
+                        ☰
+                    </button>
+                @endif
             </div>
         </div>
-    </footer>
+    </header>
+
+    <!-- Mobile Slider Navigation -->
+    <div class="overlay" id="overlay"></div>
+    <nav class="mobile-slider-nav" id="mobileSliderNav">
+        <button class="close-mobile-menu" id="closeMobileMenu">x</button>
+        <a href="{{ route('courses.index') }}">Courses</a>
+        @auth
+            <a href="{{ url('/dashboard') }}">Dashboard</a>
+        @else
+            <div class="auth-buttons">
+                <a href="{{ route('login') }}">Log in</a>
+                @if (Route::has('register'))
+                    <a href="{{ route('register') }}">Register</a>
+                @endif
+            </div>
+        @endauth
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        @yield('content')
+    </main>
 
     <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('active');
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const mobileSliderNav = document.getElementById('mobileSliderNav');
+            const overlay = document.getElementById('overlay');
+
+            function toggleMobileMenu() {
+                mobileSliderNav.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = mobileSliderNav.classList.contains('active') ? 'hidden' : '';
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            closeMobileMenu.addEventListener('click', toggleMobileMenu);
+            overlay.addEventListener('click', toggleMobileMenu);
+        });
     </script>
 </body>
 </html>

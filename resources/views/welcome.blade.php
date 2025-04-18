@@ -67,7 +67,7 @@
                 <div class="bg-gray-900 p-6 md:p-8 rounded-xl">
                     <div class="flex items-center mb-3 md:mb-4">
                         <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden mr-3 md:mr-4">
-                            <img src="/frontend/profile_pic1.jpg" alt="Michael R." class="w-full h-full object-cover">
+                            <img src="/frontend/profile_pic3.jpg" alt="Michael R." class="w-full h-full object-cover">
                         </div>
                         <div>
                             <h4 class="font-bold text-sm md:text-base">Michael R.</h4>
@@ -104,5 +104,20 @@
             </a>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-6 md:py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="logo mb-4 md:mb-0">
+                    <span class="logo-icon"></span>
+                    TheCrtCrew
+                </div>
+                <div class="text-gray-400 text-sm md:text-base">
+                    © {{ date('Y') }} TheCrtCrew. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
 
 @endsection
