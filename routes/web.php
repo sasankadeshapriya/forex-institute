@@ -37,6 +37,12 @@ Route::middleware('auth')->group(function () {
         [EntrolledCourseController::class, 'markComplete']
     )->name('entrolled-courses.mark-complete');
 
+    Route::prefix('checkout')->name('checkout.')->group(function () {
+        Route::get('/', [CheckoutController::class, 'show'])->name('index');
+        Route::post('process', [CheckoutController::class, 'processOrder'])->name('process');
+        Route::get('success', [CheckoutController::class, 'success'])->name('success');
+    });
+
 });
 
 Route::prefix('cart')->name('cart.')->group(function () {
@@ -46,11 +52,6 @@ Route::prefix('cart')->name('cart.')->group(function () {
     Route::post('clear', [CartController::class, 'clear'])->name('clear');
 });
 
-Route::prefix('checkout')->name('checkout.')->group(function () {
-    Route::get('/', [CheckoutController::class, 'show'])->name('index');
-    Route::post('process/{course}', [CheckoutController::class, 'processOrder'])->name('process');
-    Route::get('success/{order}', [CheckoutController::class, 'success'])->name('success');
-});
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';

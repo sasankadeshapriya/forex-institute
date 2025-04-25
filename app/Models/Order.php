@@ -10,14 +10,7 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'user_id',
-        'course_id',
-        'status',
-        'total_amount',
-        'payment_method',
-        'transaction_id',
-    ];
+    protected $guarded = [];
     // Many-to-One relationship with User
     public function user()
     {
