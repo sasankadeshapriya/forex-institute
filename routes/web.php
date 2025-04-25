@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserDashboard;
 use App\Http\Controllers\CourseListController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +37,19 @@ Route::middleware('auth')->group(function () {
         [EntrolledCourseController::class, 'markComplete']
     )->name('entrolled-courses.mark-complete');
 
+});
+
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::post('add/{course}', [CartController::class, 'add'])->name('add');
+    Route::post('remove/{course}', [CartController::class, 'remove'])->name('remove');
+    Route::post('clear', [CartController::class, 'clear'])->name('clear');
+});
+
+Route::prefix('checkout')->name('checkout.')->group(function () {
+    Route::get('/', [CheckoutController::class, 'show'])->name('index');
+    Route::post('process/{course}', [CheckoutController::class, 'processOrder'])->name('process');
+    Route::get('success/{order}', [CheckoutController::class, 'success'])->name('success');
 });
 
 require __DIR__ . '/auth.php';

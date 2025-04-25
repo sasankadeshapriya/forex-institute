@@ -60,10 +60,13 @@
                             <div class="text-3xl font-bold text-green-400">${{ number_format($course->price, 2) }}</div>
                         </div>
 
-                        <!-- Enroll Button -->
-                        <a href="#" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold px-6 py-3 rounded-full text-center transition-colors block">
-                            Enroll Now
-                        </a>
+                        <!-- Enroll Now Button (Changed to Form submission) -->
+                        <form action="{{ route('cart.add', $course->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold px-6 py-3 rounded-full text-center transition-colors block">
+                                Add to Cart
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
