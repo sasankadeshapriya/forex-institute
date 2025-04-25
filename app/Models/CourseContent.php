@@ -10,6 +10,7 @@ class CourseContent extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [];
     // One-to-Many relationship with CourseProgress
     public function courseProgress()
     {

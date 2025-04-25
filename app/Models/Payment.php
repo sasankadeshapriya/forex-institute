@@ -10,6 +10,7 @@ class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [];
     // Many-to-One relationship with Order
     public function order()
     {
