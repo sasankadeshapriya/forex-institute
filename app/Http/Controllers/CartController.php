@@ -36,7 +36,12 @@ class CartController extends Controller
         $user = Auth::user();
 
         // Prevent adding the course if the user is already enrolled in it
-        if ($user->courses->contains($course)) {
+        $alreadyEnrolled = $user->orders()
+            ->where('course_id', $course->id)
+            ->whereNull('deleted_at')  // Exclude soft-deleted orders
+            ->exists();
+
+        if ($alreadyEnrolled) {
             return redirect()->route('cart.index')->with('error', 'You are already enrolled in this course.');
         }
 

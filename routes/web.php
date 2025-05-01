@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientOrderList;
 use App\Http\Controllers\EntrolledCourseController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,12 @@ Route::get('/dashboard', [UserDashboard::class, 'index'])->middleware(['auth', '
 Route::get('/courses', [CourseListController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course}', [CourseListController::class, 'show'])->name('courses.show');
 
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::post('add/{course}', [CartController::class, 'add'])->name('add');
+    Route::post('remove/{course}', [CartController::class, 'remove'])->name('remove');
+    Route::post('clear', [CartController::class, 'clear'])->name('clear');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,13 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::get('success', [CheckoutController::class, 'success'])->name('success');
     });
 
-});
-
-Route::prefix('cart')->name('cart.')->group(function () {
-    Route::get('/', [CartController::class, 'index'])->name('index');
-    Route::post('add/{course}', [CartController::class, 'add'])->name('add');
-    Route::post('remove/{course}', [CartController::class, 'remove'])->name('remove');
-    Route::post('clear', [CartController::class, 'clear'])->name('clear');
+    Route::get('/order-list', [ClientOrderList::class, 'index'])->name('order-list.index');
 });
 
 

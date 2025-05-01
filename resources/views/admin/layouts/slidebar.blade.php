@@ -26,8 +26,8 @@
             </a>
           </li>
 
-          <li>
-            <a class="nav-link" href="#">
+          <li class="{{ request()->is('admin/orders*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.orders.index') }}">
               <i class="far fa-file-alt"></i> <span>Orders</span>
             </a>
           </li>

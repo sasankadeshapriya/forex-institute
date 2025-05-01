@@ -15,6 +15,7 @@
 
         <li class="{{ request()->is('entrolled-courses*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('entrolled-courses.index') }}"><i class="fas fa-th-large"></i> <span>My Courses</span></a></li>
 
+        <li class="{{ request()->is('order-list*') ? 'active' : '' }}"><a class="nav-link" href="{{ route('order-list.index') }}"><i class="fa fa-shopping-cart"></i> <span>Orders</span></a></li>
       </ul>
 
     </aside>
