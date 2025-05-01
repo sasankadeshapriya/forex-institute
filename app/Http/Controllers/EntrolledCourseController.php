@@ -21,6 +21,7 @@ class EntrolledCourseController extends Controller
         // 1) Pull all completed orders, newest first
         $completedOrders = $user->orders()
             ->where('status', 'completed')
+            ->whereNull('deleted_at')
             ->orderByDesc('created_at')
             ->get();
 
@@ -86,6 +87,12 @@ class EntrolledCourseController extends Controller
         $user = Auth::user();
         $course = Course::findOrFail($id);
 
+        // Check if the course has any contents
+        if ($course->contents->isEmpty()) {
+
+            return view('client.entrolled-courses.under-maintenance')->with('message', 'This course is currently under maintenance as no content is available.');
+        }
+
         // Get the user's progress for this course
         $courseProgress = $user->courseProgress()->where('course_id', $course->id)->get();
 
@@ -110,7 +117,6 @@ class EntrolledCourseController extends Controller
             $nextContent = $course->contents->first(); // If no content is completed, show the first one
         }
 
-        // dd($course, $progress, $contents, $completedContentIds, $nextContent, $lastCompletedContentId);
         return view('client.entrolled-courses.show', compact('course', 'progress', 'contents', 'completedContentIds', 'nextContent', 'lastCompletedContentId'));
     }
 
@@ -133,9 +139,24 @@ class EntrolledCourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $user = Auth::user();
+
+        // Find the order for the course
+        $order = Order::where('user_id', $user->id)
+            ->where('course_id', $id)
+            ->whereNull('deleted_at')
+            ->first();
+
+        if ($order) {
+            // Soft delete the order (removing it from the cart)
+            $order->delete();
+
+            return redirect()->route('entrolled-courses.index')->with('success', 'Course removed from your enrolled courses.');
+        }
+
+        return redirect()->route('entrolled-courses.index')->with('error', 'Course not found in your enrolled courses.');
     }
 
     public function markComplete($courseId, $contentId)

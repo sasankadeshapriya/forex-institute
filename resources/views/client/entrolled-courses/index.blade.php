@@ -62,6 +62,7 @@
                             </div>
                             <small class="text-muted">{{ number_format($course->progress, 2) }}% completed</small>
                           </div>
+
                         </div>
                       </div>
                     </a>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\CourseContentController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 
@@ -13,6 +14,8 @@ Route::prefix('admin')
             ->name('dashboard');
 
         Route::resource('courses', CourseController::class);
+
+        Route::resource('orders', OrderController::class);
 
         Route::prefix('course-content')->group(function () {
             Route::get('create/{course_id}', [CourseContentController::class, 'create'])->name('course-content.create');

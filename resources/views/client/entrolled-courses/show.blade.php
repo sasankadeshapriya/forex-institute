@@ -82,6 +82,7 @@
               <button class="btn btn-outline-primary" id="prevBtn">Previous</button>
               <button class="btn btn-outline-primary" id="nextBtn">Next</button>
             </div>
+
           </div>
         </div>
       </div>
