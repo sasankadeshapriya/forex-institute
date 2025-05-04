@@ -28,3 +28,9 @@ Route::prefix('admin')
             Route::get('move-down/{id}', [CourseContentController::class, 'moveDown'])->name('course-content.moveDown');
         });
     });
+
+Route::get('admin/debug/slip/{filename}', function ($filename) {
+    $filePath = storage_path('app/private/slips/' . $filename);
+    return response()->file($filePath);
+})->name('admin.debug.slip')->middleware(['auth', 'role:admin']);
+
