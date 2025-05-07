@@ -18,7 +18,7 @@ class UserDashboard extends Controller
 
         // Get the last purchase order for the logged-in user
         $lastOrder = Order::where('user_id', Auth::id())
-            ->where('status', 'completed')   // Check if status is 'completed'
+            ->where('status', 'confirmed')   // Check if status is 'completed'
             ->whereNull('deleted_at')
             ->latest()
             ->first();

@@ -1,5 +1,13 @@
 @extends('layouts.home')
 
+@push('styles')
+<style>
+    .min-h-screen {
+        min-height: 93vh;
+    }
+</style>
+@endpush
+
 @section('content')
 
     <!-- Hero Section -->
@@ -121,3 +129,4 @@
     </footer>
 
 @endsection
+
