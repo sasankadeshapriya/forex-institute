@@ -151,7 +151,6 @@
             color: #228B22;
         }
 
-        /* Updated mobile navigation buttons */
         .mobile-slider-nav .btn {
             display: block;
             text-align: center;
@@ -213,7 +212,6 @@
             }
         }
 
-        /* Content Styles */
         .hero-section {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/frontend/background_image.jpg');
             background-size: cover;
@@ -249,7 +247,57 @@
             transform: translateY(-5px);
             border-color: #228B22;
         }
+
+        .cart-link {
+            padding: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .cart-icon-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-count-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: #228B22;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .mobile-cart-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .mobile-cart-count {
+            margin-left: 8px;
+            background-color: #228B22;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
     </style>
+
+    @stack('styles')
 </head>
 <body>
     <!-- Navigation -->
@@ -264,6 +312,23 @@
                 @if (Route::has('login'))
                     <!-- Desktop Navigation -->
                     <nav class="desktop-nav">
+
+                        <a href="{{ route('cart.index') }}" class="cart-link hover:text-green-500">
+                            <div class="cart-icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                @php
+                                    $cartCount = count(session('cart', []));
+                                @endphp
+                                @if($cartCount > 0)
+                                    <span class="cart-count-badge">
+                                        {{ $cartCount }}
+                                    </span>
+                                @endif
+                            </div>
+                        </a>
+
                         <a href="{{ route('courses.index') }}" class="hover:text-green-500">Courses</a>
                         @auth
                             <a href="{{ url('/dashboard') }}" class="btn">Dashboard</a>
@@ -299,6 +364,19 @@
                 @endif
             </div>
         @endauth
+        <a href="{{ route('cart.index') }}" class="mobile-cart-link">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            @php
+                $cartCount = count(session('cart', []));
+            @endphp
+            @if($cartCount > 0)
+                <span class="mobile-cart-count">
+                    {{ $cartCount }}
+                </span>
+            @endif
+        </a>
     </nav>
 
     <!-- Main Content -->

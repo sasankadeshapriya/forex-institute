@@ -20,7 +20,7 @@ class EntrolledCourseController extends Controller
 
         // 1) Pull all completed orders, newest first
         $completedOrders = $user->orders()
-            ->where('status', 'completed')
+            ->where('status', 'confirmed')
             ->whereNull('deleted_at')
             ->orderByDesc('created_at')
             ->get();

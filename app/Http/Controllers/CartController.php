@@ -80,4 +80,5 @@ class CartController extends Controller
         session()->forget('cart');
         return redirect()->route('cart.index')->with('success', 'Cart cleared.');
     }
+
 }
